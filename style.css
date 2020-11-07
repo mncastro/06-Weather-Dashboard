@@ -1,0 +1,21 @@
+.info-weather {
+    border: black;
+    border-radius: initial;
+    border-style: solid;
+}
+
+li{
+    list-style: none;
+    padding: 10px 5px;
+    background-color: #fff;
+    margin: 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,.16);
+    border-radius: 3px;
+    transition: .4s;
+}
+
+#city-name{
+    color: teal;
+    font-weight: bolder;
+    font-size: 30px;
+}
