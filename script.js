@@ -33,6 +33,8 @@ function formatSearch(jsonObject) {
     var cityLat = jsonObject.coord.lat;
     var cityLon = jsonObject.coord.lon;
     var keyAPI = "478383033577a354a3049bfdcd0fa60d";
+    var icon = jsonObject.weather[0].icon;
+    var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
 
     $("#city-uvIndex").empty()
     var uvURL = ("https://api.openweathermap.org/data/2.5/uvi?&lat=" + cityLat + "&lon=" + cityLon + "&appid=" + keyAPI); 
@@ -42,7 +44,11 @@ function formatSearch(jsonObject) {
       method: "GET"
     }).then(function (response) {
       console.log(response)
-    
+
+    $('#icon').attr('<img src="iconURL">');
+    $('#icon').attr("class", "icon")
+
+    console.log(iconURL)
 
     $("#city-name").text(cityName);
     $("#city-weather").text("Conditions: " + cityWeather);
