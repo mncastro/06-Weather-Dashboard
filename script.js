@@ -1,10 +1,12 @@
 $(document).ready(function() {
-    
+    // function to activate search after user clicks or presses enter 
     $("#form-submit").submit(function(event) {
+        // function that performs promise to API 
         performSearch(event);
     });
 });
 
+// Function that makes Ajax promise to API
 function performSearch(event) {
     event.preventDefault();
 
@@ -12,18 +14,52 @@ function performSearch(event) {
         url: 'https://api.openweathermap.org/data/2.5/weather',
         type: "GET",
         data: {
+            // Default is set to Celsius (metric)
             q: $("#city").val(),
             appid: '478383033577a354a3049bfdcd0fa60d',
             units: 'metric'
         }
     });
 
+    // After promise new function creates the Weather search for city input
     request.then(function(response) {
         formatSearch(response);
+        getForecast(response.coord.lat, response.coord.lon)
     });
 }
 
+function getForecast(lat, lon) {
+    request = $.ajax({
+        url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly&appid=478383033577a354a3049bfdcd0fa60d&units=metric`,
+        type: "GET",
+        dataType: "json"
+    });
 
+    // After promise new function creates the Weather search for city input
+    request.then(function(response) {
+        console.log(response)
+        buildForecastCards(response)
+    });
+}
+
+function buildForecastCards(jsonObject){
+    var day = jsonObject.daily
+    for (i = 1; i < 6; i++){
+        var timeDisplay = moment.unix(day[i].dt).format("dddd")
+        console.log(day[i]);
+        var card = $("<div>").addClass("card");
+        var cardBody = $("<div>").addClass("card-body");
+        var cardTitle = $("<h5>").addClass("card-title").text(timeDisplay);
+        var tempMax = $("<h6>").addClass("card-text").text("Max. Temp: " + day[i].temp.max);
+        var tempMin = $("<h6>").addClass("card-text").text("Min. Temp: " + day[i].temp.min);
+        var windSpeed = $("<h6>").addClass("card-text").text("Wind Speed: " + day[i].wind_speed);
+        var icon = $("<img>").attr('src', "http://openweathermap.org/img/wn/" + day[i].weather[0].icon + "@2x.png" )
+
+        $("#forecast").append(card.append(cardBody.append(cardTitle.append(icon),tempMax, tempMin, windSpeed)))
+    }
+}
+
+// Function that sets variables to JSON 
 function formatSearch(jsonObject) {
     var cityName = jsonObject.name;
     var cityWeather = jsonObject.weather[0].main;
@@ -33,9 +69,12 @@ function formatSearch(jsonObject) {
     var cityLat = jsonObject.coord.lat;
     var cityLon = jsonObject.coord.lon;
     var keyAPI = "478383033577a354a3049bfdcd0fa60d";
+    
+    // Variables to get icon from API
     var icon = jsonObject.weather[0].icon;
     var iconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
 
+    // Ajax call to retrieve UV Index value
     $("#city-uvIndex").empty()
     var uvURL = ("https://api.openweathermap.org/data/2.5/uvi?&lat=" + cityLat + "&lon=" + cityLon + "&appid=" + keyAPI); 
     
@@ -44,13 +83,16 @@ function formatSearch(jsonObject) {
       method: "GET"
     }).then(function (response) {
       console.log(response)
-
-    $('#icon').attr('<img src="iconURL">');
+    
+    // Sets style attributes and icon image to HTML (NOT WORKING) 
+    $('#info-weather').attr('style', '.class-weather');
+    var icon = $("<img>").attr('src', iconURL).attr("id", "icon")
     $('#icon').attr("class", "icon")
 
     console.log(iconURL)
 
-    $("#city-name").text(cityName);
+    // Inputs JSON value to column
+    $("#city-name").text(cityName).append(icon);
     $("#city-weather").text("Conditions: " + cityWeather);
     $("#city-temp").text("Temperature: " + cityTemp + " Celsius");
     $("#temp-far").text("Temperature: " + (cityTemp * 1.8).toFixed(1) + 32 + " Fahrenheit");

@@ -1,17 +1,21 @@
-.info-weather {
+
+.card {
+    background-color: lightblue;
+    size: 50px;
+}
+
+.icon {
+    size: 5px;
+}
+
+.row {
+    margin: 15px;
+}
+
+.class-weather {
     border: black;
     border-radius: initial;
     border-style: solid;
-}
-
-li{
-    list-style: none;
-    padding: 10px 5px;
-    background-color: #fff;
-    margin: 12px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,.16);
-    border-radius: 3px;
-    transition: .4s;
 }
 
 #city-name{
