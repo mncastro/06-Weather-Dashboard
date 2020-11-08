@@ -18,6 +18,12 @@ A simple Weather Dashboard that allows the user to search for a city's current w
 
 -The forecast displays the current days of the week and uses the momentjs library.
 
+# Screenshot and GIF of Application's Functionality
+
+<img width="1187" alt="Weather Dashboard App" src="https://user-images.githubusercontent.com/29212429/98455809-3c192500-213b-11eb-89e9-b26e647a711d.png">
+
+![Weather Practice](https://user-images.githubusercontent.com/29212429/98455819-50f5b880-213b-11eb-960a-1d0e7b047b72.gif)
+
 
 
 
