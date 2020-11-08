@@ -1,3 +1,6 @@
+// Application lacks several funcionalities (local storage and color for UV Index and current weather), but works well and I'm proud that I was able to solve it with a small code. 
+// some examples I saw online were up to 300 or 400 lines. 
+// Code was partially based on this tutorial https://www.youtube.com/watch?v=BvU4L2C1wcI
 $(document).ready(function() {
     // function to activate search after user clicks or presses enter 
     $("#form-submit").submit(function(event) {
@@ -50,12 +53,14 @@ function buildForecastCards(jsonObject){
         var card = $("<div>").addClass("card");
         var cardBody = $("<div>").addClass("card-body");
         var cardTitle = $("<h5>").addClass("card-title").text(timeDisplay);
-        var tempMax = $("<h6>").addClass("card-text").text("Max. Temp: " + day[i].temp.max);
-        var tempMin = $("<h6>").addClass("card-text").text("Min. Temp: " + day[i].temp.min);
-        var windSpeed = $("<h6>").addClass("card-text").text("Wind Speed: " + day[i].wind_speed);
+        var tempMax = $("<h6>").addClass("card-text").text("Max. Temp: " + day[i].temp.max + " " + String.fromCharCode(8451));
+        var tempMin = $("<h6>").addClass("card-text").text("Min. Temp: " + day[i].temp.min + " " + String.fromCharCode(8451));
+        var feelLike = $("<h6>").addClass("card-text").text("Feels like: " + day[i].feels_like.day + " " + String.fromCharCode(8451));
+
+        var windSpeed = $("<h6>").addClass("card-text").text("Wind Speed: " + day[i].wind_speed + " mph");
         var icon = $("<img>").attr('src', "http://openweathermap.org/img/wn/" + day[i].weather[0].icon + "@2x.png" )
 
-        $("#forecast").append(card.append(cardBody.append(cardTitle.append(icon),tempMax, tempMin, windSpeed)))
+        $("#forecast").append(card.append(cardBody.append(cardTitle.append(icon),tempMax, tempMin, feelLike, windSpeed)))
     }
 }
 
@@ -94,8 +99,8 @@ function formatSearch(jsonObject) {
     // Inputs JSON value to column
     $("#city-name").text(cityName).append(icon);
     $("#city-weather").text("Conditions: " + cityWeather);
-    $("#city-temp").text("Temperature: " + cityTemp + " Celsius");
-    $("#temp-far").text("Temperature: " + (cityTemp * 1.8).toFixed(1) + 32 + " Fahrenheit");
+    $("#city-temp").text("Temperature: " + cityTemp + " " + String.fromCharCode(8451));
+    $("#temp-far").text("Temperature: " + (cityTemp * 1.8).toFixed(1) + 32 + " " + String.fromCharCode(8457));
     $("#city-humidity").text("Humidity: " + cityHumidity);
     $("#city-wind").text("Wind Speed: " + cityWind + " mph");
     $("#city-uvIndex").text("UV Index: " + response.value);
